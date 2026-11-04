@@ -1,0 +1,892 @@
+/* ===================================================
+   DESIGN TOKENS — SOFT NEO-BRUTALISM & HORIZONTAL CANVAS
+   =================================================== */
+html {
+  /* Base for the 100% / 115% / 130% accessible font scaling controls. */
+  font-size: 1rem;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --black: #0d0d0d;
+  --white: #ffffff;
+  --section-bg: #f4f4f6;
+  --gray-mid: #70706b;
+  --gray-light: #deded8;
+  --gray-dark: #2b2b28;
+  --orange: #ff5500;
+  --orange-dim: rgba(217, 72, 0, 0.95);
+  --teal: #0d7d6b;
+  --indigo: #3b3fd8;
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'Space Mono', 'Courier New', Courier, monospace;
+
+  /* Paper texture grain */
+  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+}
+
+#dev-toolbar-root {
+  display: none !important;
+}
+
+/* ── Dark Mode Tokens ── */
+:root[data-theme="dark"] {
+  --black: #f5f5f0;
+  --white: #0a0a0c;
+  --section-bg: #141417;
+  --gray-mid: #969690;
+  --gray-light: #2c2c30;
+  --gray-dark: #cccccc;
+  --orange: #ff661a;
+  --orange-dim: #e65200;
+  color-scheme: dark;
+}
+
+/* ── High Contrast Overrides (WCAG AAA) ── */
+:root.a11y-high-contrast {
+  --black: #000000 !important;
+  --white: #ffffff !important;
+  --section-bg: #ffffff !important;
+  --gray-mid: #111111 !important;
+  --gray-light: #000000 !important;
+  --gray-dark: #000000 !important;
+  /* Dark orange: 8.9:1 against white (AAA for normal text). */
+  --orange: #8a2600 !important;
+  color-scheme: light;
+}
+
+:root.a11y-high-contrast body,
+:root.a11y-high-contrast .antigravity-dot-grid {
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+:root.a11y-high-contrast body::before {
+  display: none !important;
+}
+
+:root.a11y-high-contrast .snap-section,
+:root.a11y-high-contrast #sobre-mi {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+:root.a11y-high-contrast #sobre-mi {
+  --orange: #8a2600 !important;
+}
+
+:root.a11y-high-contrast #sobre-mi .sec-title,
+:root.a11y-high-contrast #sobre-mi .sec-num,
+:root.a11y-high-contrast #sobre-mi .sobre-col-label,
+:root.a11y-high-contrast #sobre-mi .perfil-kicker,
+:root.a11y-high-contrast #sobre-mi .perfil-name,
+:root.a11y-high-contrast #sobre-mi .perfil-role,
+:root.a11y-high-contrast #sobre-mi .perfil-bio,
+:root.a11y-high-contrast #sobre-mi .perfil-stat,
+:root.a11y-high-contrast #sobre-mi .perfil-meta-item,
+:root.a11y-high-contrast #sobre-mi .perfil-meta-item span,
+:root.a11y-high-contrast #sobre-mi .perfil-meta-item strong,
+:root.a11y-high-contrast #sobre-mi .logro-text,
+:root.a11y-high-contrast #sobre-mi .logro-text strong {
+  color: #000000 !important;
+}
+
+:root.a11y-high-contrast #sobre-mi .perfil-stat,
+:root.a11y-high-contrast #sobre-mi .perfil-meta,
+:root.a11y-high-contrast #sobre-mi .perfil-main {
+  background: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+:root.a11y-high-contrast .nav-pill,
+:root.a11y-high-contrast .sidebar-btn {
+  border-width: 2.5px !important;
+  border-color: #000000 !important;
+  box-shadow: none !important;
+}
+
+:root.a11y-high-contrast .pill-inicio,
+:root.a11y-high-contrast .pill-contacto {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+:root.a11y-high-contrast .pill-exp {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+:root.a11y-high-contrast .pill-sobre,
+:root.a11y-high-contrast .pill-proyectos {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+:root.a11y-high-contrast .sec-title,
+:root.a11y-high-contrast .sec-num,
+:root.a11y-high-contrast .section-intro,
+:root.a11y-high-contrast h1,
+:root.a11y-high-contrast h2,
+:root.a11y-high-contrast h3,
+:root.a11y-high-contrast h4,
+:root.a11y-high-contrast p,
+:root.a11y-high-contrast li,
+:root.a11y-high-contrast strong,
+:root.a11y-high-contrast span,
+:root.a11y-high-contrast label {
+  color: #000000 !important;
+}
+
+:root.a11y-high-contrast a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+:root.a11y-high-contrast .project-btn.primary,
+:root.a11y-high-contrast .contacto-form button[type="submit"],
+:root.a11y-high-contrast .copy-btn,
+:root.a11y-high-contrast .filter-btn.active {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+:root.a11y-high-contrast .project-btn.primary *,
+:root.a11y-high-contrast .contacto-form button[type="submit"] *,
+:root.a11y-high-contrast .copy-btn *,
+:root.a11y-high-contrast .filter-btn.active * {
+  color: #ffffff !important;
+}
+
+:root.a11y-high-contrast :focus-visible {
+  outline: 3px solid #000000 !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 7px #ffffff !important;
+}
+
+/* Keep inverted/coloured controls legible in high-contrast mode. The global
+   rule above turns every span black, so elements that sit on black or dark
+   orange backgrounds need their text restored to white. */
+:root.a11y-high-contrast span.contacto-card-icon,
+:root.a11y-high-contrast span.tech-tag.highlight,
+:root.a11y-high-contrast .a11y-action-btn,
+:root.a11y-high-contrast .cv-download-btn {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+:root.a11y-high-contrast span.contacto-card-icon,
+:root.a11y-high-contrast span.tech-tag.highlight,
+:root.a11y-high-contrast .a11y-action-btn *,
+:root.a11y-high-contrast .cv-download-btn *,
+:root.a11y-high-contrast .galeria-all-link:hover * {
+  color: #ffffff !important;
+}
+
+:root.a11y-high-contrast .a11y-btn-sm {
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+:root.a11y-high-contrast .a11y-btn-sm.active {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+/* ── Grayscale Filter ── */
+:root.a11y-grayscale body {
+  filter: grayscale(1);
+}
+
+/* ── Dyslexia Friendly Mode ── */
+:root.a11y-dyslexia * {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important;
+  letter-spacing: 0.06em !important;
+  word-spacing: 0.14em !important;
+  line-height: 1.85 !important;
+}
+
+/* ── Reduced Motion Mode ── */
+:root.a11y-reduce-motion * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Skip Link ── */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 2000;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  background: #000000;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-decoration: none;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 3px #000000;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 14px;
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* ── Screen-reader only ── */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ── Reading Guide ── */
+.a11y-reading-guide {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: var(--orange);
+  box-shadow: 0 0 0 2px rgba(255, 85, 0, 0.18);
+  z-index: 1500;
+  pointer-events: none;
+}
+
+
+/* ===================================================
+   RESET & HORIZONTAL CANVAS BASE (Requirement 1)
+   =================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #ffffff;
+  color: var(--black);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+:root[data-theme="dark"] body {
+  background-color: #09090b;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===================================================
+   ANTIGRAVITY DOT GRID PATTERN (Main Page Only)
+   Inspired by Google Antigravity Technical Canvas
+   =================================================== */
+.antigravity-dot-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-color: #ffffff;
+  background-image: radial-gradient(circle, rgba(13, 13, 13, 0.16) 1.25px, transparent 1.25px);
+  background-size: 24px 24px;
+  background-position: 0 0;
+}
+
+:root[data-theme="dark"] .antigravity-dot-grid {
+  background-color: #0c0c0e;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.17) 1.25px, transparent 1.25px);
+}
+
+/* Subtle grain overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: var(--grain);
+  background-size: 240px 240px;
+  pointer-events: none;
+  z-index: 80;
+}
+
+/* ===================================================
+   HORIZONTAL SCROLL CONTAINER — Smooth Center Snap (vicio.com UX)
+   =================================================== */
+.horizontal-scroll-container,
+#main-horizontal-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar,
+#main-horizontal-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Each section fills the viewport; content scrolls within the section if needed. */
+.snap-section {
+  flex: 0 0 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  background-color: #f4f4f6;
+  box-sizing: border-box !important;
+  position: relative !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 86px 5vw 40px;
+  scrollbar-width: none;
+  transition: border-color 0.3s ease;
+}
+
+.snap-section::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-section:focus {
+  outline: none;
+}
+
+.snap-section:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: -6px;
+}
+
+
+:root[data-theme="dark"] .snap-section {
+  background-color: #141417;
+  border-color: #2b2b30;
+}
+
+/* ===================================================
+   HEADER — FULL-WIDTH FIXED FLOATING CAPSULE NAVIGATION
+   =================================================== */
+.nav-container {
+  position: fixed;
+  top: 10px;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  min-width: 0;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  pointer-events: none;
+  padding: 0 10px;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-capsule-nav {
+  pointer-events: auto;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  transition: all 0.3s ease;
+}
+
+.floating-capsule-nav::-webkit-scrollbar {
+  display: none;
+}
+
+
+.nav-home-sections,
+.projects-pills-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.nav-home-sections::-webkit-scrollbar,
+.projects-pills-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-actions-group,
+.nav-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.mobile-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1.5px solid var(--gray-light);
+  border-radius: 9999px;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mobile-nav-toggle-icon {
+  display: grid;
+  gap: 3px;
+  width: 15px;
+}
+
+.mobile-nav-toggle-icon span {
+  display: block;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.pill-proyectos-cta {
+  background: transparent;
+  color: var(--black);
+  border: 2px dashed var(--black);
+  padding: 13px 22px;
+  font-weight: 800;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+:root[data-theme="dark"] .pill-proyectos-cta {
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.pill-proyectos-cta:hover {
+  background: var(--orange) !important;
+  border-color: var(--orange) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 85, 0, 0.3);
+}
+
+/* Base Nav Pill Button */
+.nav-pill {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-pill:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.nav-pill:active {
+  transform: scale(0.97);
+}
+
+/* Bloque 1 (Inicio): Botón negro con esquinas redondeadas, texto blanco */
+.pill-inicio {
+  background: var(--black);
+  color: var(--white);
+  flex: 0 0 auto;
+  min-width: 90px;
+}
+
+.pill-inicio:hover {
+  border-radius: 15px;
+  transform: scale(1.03);
+  box-shadow: none;
+}
+
+/* Bloque 2 (Sobre Mí): Botón gris claro con esquinas redondeadas, texto negro */
+.pill-sobre {
+  background: #ececed;
+  color: #0d0d0d;
+  flex: 0 0 auto;
+  min-width: 105px;
+}
+
+:root[data-theme="dark"] .pill-sobre {
+  background: #ffffff21;
+  color: #ffffff;
+}
+
+.pill-sobre:hover {
+  border-radius: 15px;
+  transform: scale(1.03);
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] .pill-sobre:hover {
+  border-radius: 15px;
+  box-shadow: none;
+}
+
+/* Bloque 3 (Experiencia): Botón naranja vibrante, esquinas redondeadas, texto negro */
+.pill-exp {
+  background: #ff5e00;
+  color: black;
+  flex: 0 0 auto;
+  border-radius: 15px;
+  min-width: 130px;
+}
+
+.pill-exp:hover {
+  border-radius: 30px;
+  transform: scale(1.03);
+  box-shadow: none;
+}
+
+/* Bloque 4 (Proyectos): Fondo transparente y borde discontinuo (dashed) negro, texto negro */
+.pill-proyectos {
+  background: transparent;
+  color: var(--black);
+  border: 1.5px dashed var(--black);
+  flex: 0 0 auto;
+  min-width: 120px;
+}
+
+:root[data-theme="dark"] .pill-proyectos {
+  color: white;
+  border-color: white;
+}
+
+.pill-proyectos:hover {
+  border-style: solid;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 15px;
+  transform: scale(1.03);
+}
+
+/* Bloque 5 (Contacto): Botón negro largo, texto blanco centrado */
+.pill-contacto {
+  background: var(--black);
+  color: var(--white);
+  border: 1px solid var(--black);
+  flex: 0 0 auto;
+  min-width: 130px;
+}
+
+:root[data-theme="dark"] .pill-contacto {
+  background: #ffffff;
+  color: #0d0d0d;
+  border-color: #ffffff;
+}
+
+.pill-contacto:hover {
+  box-shadow: none;
+  border-radius: 15px;
+  transform: scale(1.03);
+}
+
+/* Top Nav Action Icon Buttons */
+.nav-container .sidebar-btn {
+  flex-shrink: 0;
+  width: 43.59px;
+  height: 43.59px;
+  border-radius: 50%;
+  border: 1.5px solid var(--black);
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.nav-container .sidebar-btn:hover {
+  transform: scale(1.08);
+  background: var(--black);
+  color: var(--white);
+}
+
+.nav-container .sidebar-btn-highlight {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+/* ===================================================
+   AUTOMATIC CONTRAST INVERSION SYSTEM (Requirement 2)
+   Inverts nav buttons dynamically over dark areas
+   =================================================== */
+
+
+
+/* ===================================================
+   SECTIONS SHARED STYLES
+   =================================================== */
+.sec-header {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.sec-num {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--orange);
+  min-width: 28px;
+}
+
+.sec-title {
+  font-family: var(--font-mono);
+  font-size: clamp(1.625rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: black;
+}
+
+#sobre-mi .sec-title {
+  color: white;
+}
+
+.sec-rule {
+  flex: 1;
+  height: 1.5px;
+  background: var(--gray-light);
+  margin-left: 12px;
+}
+
+/* Focus Visible for Keyboard Users */
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.hidden-honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .nav-pill {
+    font-size: 0.625rem;
+    padding: 10px 14px !important;
+  }
+}
+
+/* Keep all section links and the accessibility controls visible on laptops.
+   The nav can still scroll horizontally on very narrow screens. */
+@media (max-width: 1500px) {
+  .nav-pill {
+    font-size: 0.59375rem;
+    padding: 9px 10px !important;
+    min-width: auto !important;
+  }
+
+  .nav-container .sidebar-btn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .horizontal-scroll-container,
+  #main-horizontal-container {
+    scroll-snap-type: x mandatory;
+  }
+
+  .snap-section {
+    height: 100dvh !important;
+    padding: 76px 20px 28px;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .nav-container {
+    top: 6px;
+    height: 46px;
+    padding: 0 8px;
+  }
+
+  .floating-capsule-nav {
+    gap: 4px;
+    overflow: visible;
+    overscroll-behavior-x: contain;
+  }
+
+  .mobile-nav-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  .nav-home-sections,
+  .projects-pills-bar {
+    display: none;
+  }
+
+  .nav-container.mobile-menu-open .nav-home-sections,
+  .nav-container.mobile-menu-open .projects-pills-bar {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 8px;
+    right: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: auto;
+    max-height: calc(100dvh - 80px);
+    padding: 12px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid var(--gray-light);
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-container.mobile-menu-open .nav-pill {
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: 9px 10px !important;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .nav-pill {
+    font-size: 0.5625rem;
+    padding: 8px 10px !important;
+  }
+
+  .nav-container .sidebar-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pill-exp,
+  .pill-proyectos,
+  .pill-contacto {
+    min-width: max-content;
+  }
+}
+
+:root[data-theme="dark"] #sobre-mi,
+:root[data-theme="dark"] .conocimientos-section,
+:root[data-theme="dark"] .logros-section {
+  --black: #0d0d0d;
+  --white: #f5f5f0;
+  --section-bg: #09090b;
+  background-color: #09090b;
+  color: #f5f5f0;
+}
+
+:root[data-theme="dark"] #sobre-mi .sobre-col-label,
+:root[data-theme="dark"] #sobre-mi .sobre-item-sub,
+:root[data-theme="dark"] #sobre-mi .sec-num {
+  color: #a0a0a0 !important;
+}
+
+:root[data-theme="dark"] .snap-section[data-contrast="light"] .sec-title,
+:root[data-theme="dark"] .hero-unified-canvas .hero-eyebrow {
+  color: #f5f5f0 !important;
+}
+
+:root[data-theme="dark"] .hero-cta-btn:hover {
+  border-color: #f5f5f0;
+  color: #f5f5f0;
+}
+
+:root[data-theme="dark"] .snap-section[data-contrast="light"]:not(.hero-unified-canvas) {
+  background-color: #141417 !important;
+}

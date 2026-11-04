@@ -1,0 +1,13 @@
+---
+// Stickers.astro — Draggable Stickers Initializer for Section-Anchored Stickers
+---
+
+<script>
+  import { initDraggableStickers } from "../scripts/stickers.js";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDraggableStickers);
+  } else {
+    initDraggableStickers();
+  }
+</script>

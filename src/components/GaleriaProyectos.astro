@@ -1,0 +1,219 @@
+---
+// GaleriaProyectos.astro — Interactive project cards with dynamic category filter
+---
+
+<section
+  id="galeria-proyectos"
+  class="snap-section galeria-proyectos-section"
+  data-contrast="light"
+  data-title="GALERÍA DE PROYECTOS"
+  aria-labelledby="galeria-title"
+  tabindex="-1"
+>
+  <div class="sec-header">
+    <span class="sec-num">06</span>
+    <h2 class="sec-title" id="galeria-title">Galería de proyectos</h2>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="galeria-toolbar">
+    <p class="section-intro galeria-intro">
+      Tarjetas interactivas con filtro dinámico por categorías. Explora los
+      proyectos y abre la vista detallada.
+    </p>
+    <a href="/proyectos" class="galeria-all-link">
+      Ver todos los proyectos <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+
+  <div
+    class="galeria-filters"
+    role="group"
+    aria-label="Filtrar proyectos por categoría"
+  >
+    <button
+      class="filter-btn active"
+      type="button"
+      data-filter="todos"
+      aria-pressed="true"
+    >
+      Todos
+    </button>
+    <button
+      class="filter-btn"
+      type="button"
+      data-filter="web"
+      aria-pressed="false"
+    >
+      Web
+    </button>
+    <button
+      class="filter-btn"
+      type="button"
+      data-filter="uiux"
+      aria-pressed="false"
+    >
+      UI/UX
+    </button>
+    <button
+      class="filter-btn"
+      type="button"
+      data-filter="java"
+      aria-pressed="false"
+    >
+      Java
+    </button>
+    <button
+      class="filter-btn"
+      type="button"
+      data-filter="gaming"
+      aria-pressed="false"
+    >
+      Gaming
+    </button>
+    <button
+      class="filter-btn"
+      type="button"
+      data-filter="ia"
+      aria-pressed="false"
+    >
+      IA / Datos
+    </button>
+  </div>
+
+  <p class="galeria-count" id="galeria-count" aria-live="polite">
+    Mostrando 6 de 6 proyectos
+  </p>
+
+  <div class="galeria-proyectos-grid" id="galeria-proyectos-grid">
+    <article class="proyecto-card" data-categories="web uiux">
+      <div class="proyecto-card-top">
+        <span class="proyecto-category">Web · UI/UX</span>
+        <span class="proyecto-num">001</span>
+      </div>
+      <div class="proyecto-thumb" aria-hidden="true">WEB</div>
+      <h3>Portafolio Web Interactivo</h3>
+      <p>
+        Portafolio de una sola página con navegación horizontal, animaciones y
+        accesibilidad universal.
+      </p>
+      <div class="proyecto-tags">
+        <span>Astro</span><span>CSS</span><span>GSAP</span>
+      </div>
+      <a class="proyecto-link" href="/proyectos">
+        Ver proyecto <span aria-hidden="true">→</span>
+      </a>
+    </article>
+
+    <article class="proyecto-card" data-categories="uiux web">
+      <div class="proyecto-card-top">
+        <span class="proyecto-category">UI/UX Design</span>
+        <span class="proyecto-num">002</span>
+      </div>
+      <div class="proyecto-thumb" aria-hidden="true">UI/UX</div>
+      <h3>Diseño Web UI/UX</h3>
+      <p>
+        Prototipo de alta fidelidad en Figma con design system, wireframes y
+        flujos de navegación intuitivos.
+      </p>
+      <div class="proyecto-tags">
+        <span>Figma</span><span>Prototyping</span><span>UX</span>
+      </div>
+      <a class="proyecto-link" href="/proyectos">
+        Ver proyecto <span aria-hidden="true">→</span>
+      </a>
+    </article>
+
+    <article class="proyecto-card" data-categories="gaming">
+      <div class="proyecto-card-top">
+        <span class="proyecto-category">Gaming · Eventos</span>
+        <span class="proyecto-num">003</span>
+      </div>
+      <div class="proyecto-thumb" aria-hidden="true">EVENTO</div>
+      <h3>Evento Interactivo LATAM</h3>
+      <p>
+        Coorganización de un torneo multijugador con 30 participantes,
+        moderación en tiempo real y baja latencia.
+      </p>
+      <div class="proyecto-tags">
+        <span>Game Hosting</span><span>Plugins</span><span>LATAM</span>
+      </div>
+      <a class="proyecto-link" href="/proyectos">
+        Ver proyecto <span aria-hidden="true">→</span>
+      </a>
+    </article>
+
+    <article class="proyecto-card" data-categories="java">
+      <div class="proyecto-card-top">
+        <span class="proyecto-category">Java · POO</span>
+        <span class="proyecto-num">004</span>
+      </div>
+      <div class="proyecto-thumb" aria-hidden="true">JAVA</div>
+      <h3>Sistema de Reserva de Hotel</h3>
+      <p>
+        Gestión de habitaciones, check-in/check-out y clientes aplicando
+        herencia, polimorfismo y encapsulamiento.
+      </p>
+      <div class="proyecto-tags">
+        <span>Java</span><span>POO</span><span>CRUD</span>
+      </div>
+      <a class="proyecto-link" href="/proyectos">
+        Ver proyecto <span aria-hidden="true">→</span>
+      </a>
+    </article>
+
+    <article class="proyecto-card" data-categories="ia web">
+      <div class="proyecto-card-top">
+        <span class="proyecto-category">IA · Datos</span>
+        <span class="proyecto-num">005</span>
+      </div>
+      <div class="proyecto-thumb" aria-hidden="true">DATOS</div>
+      <h3>Análisis de Datos con Python</h3>
+      <p>
+        Limpieza, exploración y visualización de datos con Python, enfocada en
+        la toma de decisiones.
+      </p>
+      <div class="proyecto-tags">
+        <span>Python</span><span>Pandas</span><span>NLP básico</span>
+      </div>
+      <a class="proyecto-link" href="/proyectos">
+        Ver proyecto <span aria-hidden="true">→</span>
+      </a>
+    </article>
+
+    <article class="proyecto-card" data-categories="web">
+      <div class="proyecto-card-top">
+        <span class="proyecto-category">Web · Frontend</span>
+        <span class="proyecto-num">006</span>
+      </div>
+      <div class="proyecto-thumb" aria-hidden="true">MÓVIL</div>
+      <h3>Landing Page Responsive</h3>
+      <p>
+        Landing page adaptable a móvil y escritorio con componentes
+        reutilizables y buenas prácticas de SEO.
+      </p>
+      <div class="proyecto-tags">
+        <span>HTML</span><span>CSS</span><span>Responsive</span>
+      </div>
+      <a class="proyecto-link" href="/proyectos">
+        Ver proyecto <span aria-hidden="true">→</span>
+      </a>
+    </article>
+  </div>
+
+  <p class="galeria-empty" id="galeria-empty" hidden>
+    No hay proyectos en esta categoría por el momento.
+  </p>
+
+  <div class="section-stickers-layer" aria-hidden="true">
+    <div
+      class="neo-sticker sticker-orange"
+      style="top: 18%; left: 86%; --rot: 5deg; transform: rotate(5deg);"
+      data-sticker
+    >
+      <div class="sticker-inner">
+        <span class="sticker-text">PROYECTOS</span>
+      </div>
+    </div>
+  </div>
+</section>

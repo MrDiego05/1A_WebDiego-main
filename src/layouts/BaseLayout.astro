@@ -1,0 +1,73 @@
+---
+// BaseLayout.astro — Root HTML shell with SEO meta tags and global styles
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Diego Vizueta — Ingeniero de Software",
+  description = "Portafolio de Diego Vizueta. Próximo ingeniero en Software de Guayaquil, Ecuador. Disponible para oportunidades.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="description" content={description} />
+    <meta name="author" content="Diego Vizueta" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Apply saved accessibility preferences before first paint -->
+    <script is:inline>
+      (function () {
+        try {
+          var root = document.documentElement;
+          var theme = localStorage.getItem("theme");
+          if (theme) root.setAttribute("data-theme", theme);
+
+          var scale = localStorage.getItem("a11y-font-scale") || "100";
+          if (["100", "115", "130"].indexOf(scale) === -1) scale = "100";
+          root.setAttribute("data-font-scale", scale);
+          root.style.fontSize = 16 * (parseInt(scale, 10) / 100) + "px";
+
+          if (localStorage.getItem("a11y-high-contrast") === "on") {
+            root.classList.add("a11y-high-contrast");
+          }
+          if (localStorage.getItem("a11y-reduce-motion") === "on") {
+            root.classList.add("a11y-reduce-motion");
+          }
+          if (localStorage.getItem("a11y-dyslexia") === "on") {
+            root.classList.add("a11y-dyslexia");
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Keyboard-first navigation: skips the horizontal navigation and lands on the main content -->
+    <a class="skip-link" href="#main-horizontal-container">
+      Saltar al contenido principal
+    </a>
+
+    <slot />
+
+    <!-- Screen-reader-only live region for section changes -->
+    <div id="section-announcer" class="sr-only" aria-live="polite"></div>
+  </body>
+</html>

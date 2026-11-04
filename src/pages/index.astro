@@ -1,0 +1,88 @@
+---
+// pages/index.astro — 100% Horizontal Snap Portfolio (Home)
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import SobreMi from "../components/SobreMi.astro";
+import Estudios from "../components/Estudios.astro";
+import Conocimientos from "../components/Conocimientos.astro";
+import Habilidades from "../components/Habilidades.astro";
+import Experiencia from "../components/Experiencia.astro";
+import GaleriaProyectos from "../components/GaleriaProyectos.astro";
+import Logros from "../components/Logros.astro";
+import Referencias from "../components/Referencias.astro";
+import Contacto from "../components/Contacto.astro";
+import Stickers from "../components/Stickers.astro";
+import BottomBar from "../components/BottomBar.astro";
+
+// CSS imports
+import "../styles/global.css";
+import "../styles/hero.css";
+import "../styles/sidebar.css";
+import "../styles/experiencia.css";
+import "../styles/sobre-mi.css";
+import "../styles/contacto.css";
+import "../styles/stickers.css";
+import "../styles/secciones.css";
+---
+
+<BaseLayout>
+  <!-- Antigravity Technical Dot Grid Background (Only on Main Page) -->
+  <div class="antigravity-dot-grid" aria-hidden="true"></div>
+
+  <!-- Fixed Full-Width Header Navigation (Home Menu) -->
+  <Nav />
+  <!-- Accessibility dialog only; this component has no visible bottom bar. -->
+  <BottomBar />
+
+  <!-- Stickers Initializer (Draggable within section coordinates) -->
+  <Stickers />
+
+  <!-- 100% Horizontal Snap Scroll Container (Smooth Center Snap) -->
+  <main
+    id="main-horizontal-container"
+    class="horizontal-scroll-container"
+    tabindex="-1"
+    aria-label="Contenido principal del portafolio"
+  >
+    <Hero />
+    <SobreMi />
+    <Estudios />
+    <Conocimientos />
+    <Habilidades />
+    <Experiencia />
+    <GaleriaProyectos />
+    <Logros />
+    <Referencias />
+    <Contacto />
+  </main>
+
+  <!-- Scripts -->
+  <script>
+    import { initParallax } from "../scripts/parallax.js";
+    import { initSidebar } from "../scripts/sidebar.js";
+    import { initHorizontalNav } from "../scripts/horizontal-nav.js";
+    import {
+      initIntroAnimation,
+      initScrollAnimations,
+    } from "../scripts/animations.js";
+    import { initGaleria } from "../scripts/galeria.js";
+    import { initContacto } from "../scripts/contacto.js";
+
+    function start() {
+      initSidebar();
+      initHorizontalNav();
+      initParallax();
+      initIntroAnimation();
+      initScrollAnimations();
+      initGaleria();
+      initContacto();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", start);
+    } else {
+      start();
+    }
+  </script>
+</BaseLayout>

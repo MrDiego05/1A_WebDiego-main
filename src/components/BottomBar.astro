@@ -1,0 +1,270 @@
+---
+// BottomBar.astro — Accessibility panel + reading guide
+// No visible bottom bar: the accessibility panel is opened from the header.
+---
+
+<!-- Accessibility Panel (Triggered exclusively from Header Nav button) -->
+<div
+  id="a11y-advanced-panel"
+  class="a11y-advanced-panel"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Panel de Accesibilidad Universal"
+  hidden
+>
+  <div class="a11y-panel-header">
+    <div class="a11y-panel-title-wrap">
+      <svg
+        class="a11y-title-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="5" r="2"></circle>
+        <path d="m9 20 3-6 3 6"></path>
+        <path d="m6 8 6 2 6-2"></path>
+        <path d="M12 10v4"></path>
+      </svg>
+      <h3>Accesibilidad Universal</h3>
+    </div>
+    <button
+      type="button"
+      class="a11y-panel-close"
+      onclick="toggleA11yPanel()"
+      aria-label="Cerrar panel"
+    >
+      ×
+    </button>
+  </div>
+
+  <div class="a11y-panel-body">
+    <h4 class="a11y-group-title">Accesibilidad Auditiva</h4>
+    <div class="a11y-control-card">
+      <div class="a11y-control-info">
+        <h4>Contenido disponible sin audio</h4>
+        <p>
+          El sitio no reproduce sonidos automáticamente y la información se
+          presenta como texto.
+        </p>
+      </div>
+    </div>
+
+    <h4 class="a11y-group-title">Accesibilidad Visual</h4>
+    <!-- CONTROL 1: Texto a Voz / Lector de Pantalla -->
+    <div class="a11y-control-card">
+      <div class="a11y-control-head">
+        <div class="a11y-icon-pill">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+        </div>
+        <div class="a11y-control-info">
+          <h4>Lector de Pantalla (TTS)</h4>
+          <p>Lectura por voz de la sección visible en español</p>
+        </div>
+      </div>
+
+      <div class="a11y-speech-actions">
+        <button
+          id="btn-toggle-speech"
+          class="a11y-action-btn primary"
+          type="button"
+          onclick="toggleSpeech()"
+          aria-pressed="false"
+        >
+          <span id="speech-btn-icon" aria-hidden="true">▶</span>
+          <span id="speech-btn-text">Escuchar sección</span>
+        </button>
+      </div>
+
+      <div class="a11y-speech-settings">
+        <label class="a11y-field">
+          <span>Velocidad de lectura</span>
+          <input
+            type="range"
+            id="speech-rate"
+            min="0.5"
+            max="1.8"
+            step="0.1"
+            value="1"
+            onchange="updateSpeechRate(this.value)"
+            aria-label="Velocidad de lectura"
+          />
+        </label>
+      </div>
+    </div>
+
+    <!-- CONTROL 2: Tamaño de Fuente Dinámico 100 / 115 / 130 -->
+    <div class="a11y-control-card">
+      <div class="a11y-control-head">
+        <div class="a11y-icon-pill">
+          <span style="font-weight: 900; font-size: 1rem" aria-hidden="true">Aa</span>
+        </div>
+        <div class="a11y-control-info">
+          <h4>Tamaño de Texto</h4>
+          <p>Escalas accesibles: 100%, 115% y 130%</p>
+        </div>
+      </div>
+      <div class="a11y-font-buttons" role="group" aria-label="Escala de tamaño de texto">
+        <button
+          class="a11y-btn-sm active"
+          type="button"
+          data-font-scale="100"
+          aria-pressed="true"
+        >
+          100%
+        </button>
+        <button
+          class="a11y-btn-sm"
+          type="button"
+          data-font-scale="115"
+          aria-pressed="false"
+        >
+          115%
+        </button>
+        <button
+          class="a11y-btn-sm"
+          type="button"
+          data-font-scale="130"
+          aria-pressed="false"
+        >
+          130%
+        </button>
+      </div>
+      <p class="a11y-current-scale">
+        Escala actual: <strong id="font-size-display">100%</strong>
+      </p>
+    </div>
+
+    <!-- CONTROL 3: Tipografía para Dislexia -->
+    <div class="a11y-control-card">
+      <div class="a11y-control-head">
+        <div class="a11y-icon-pill">
+          <span style="font-weight: 900; font-size: 0.875rem" aria-hidden="true">Aa</span>
+        </div>
+        <div class="a11y-control-info">
+          <h4>Fuente para Dislexia</h4>
+          <p>Tipografía con espaciado y peso reforzado</p>
+        </div>
+      </div>
+      <button
+        id="btn-toggle-dyslexia"
+        class="a11y-action-btn"
+        type="button"
+        data-dyslexia-toggle
+        aria-pressed="false"
+        onclick="toggleDyslexiaFont()"
+      >
+        <span data-dyslexia-label>Activar OpenDyslexic</span>
+      </button>
+    </div>
+
+    <!-- CONTROL 4: Alto Contraste y Escala de Grises -->
+    <div class="a11y-control-card">
+      <div class="a11y-control-head">
+        <div class="a11y-icon-pill">
+          <span style="font-weight: 900; font-size: 0.875rem" aria-hidden="true">◐</span>
+        </div>
+        <div class="a11y-control-info">
+          <h4>Filtros Visuales</h4>
+          <p>Alto contraste WCAG AAA y escala de grises</p>
+        </div>
+      </div>
+      <div class="a11y-filter-grid">
+        <button
+          id="btn-high-contrast"
+          class="a11y-btn-sm"
+          type="button"
+          data-contrast-toggle
+          aria-pressed="false"
+          onclick="toggleHighContrast()"
+        >
+          <span data-contrast-label>Alto Contraste</span>
+        </button>
+        <button
+          id="btn-grayscale"
+          class="a11y-btn-sm"
+          type="button"
+          aria-pressed="false"
+          onclick="toggleGrayscale()"
+        >
+          Escala de Grises
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTROL 5: Guía de Lectura / Línea de Enfoque -->
+    <div class="a11y-control-card">
+      <div class="a11y-control-head">
+        <div class="a11y-icon-pill">
+          <span style="font-weight: 900; font-size: 0.875rem" aria-hidden="true">━</span>
+        </div>
+        <div class="a11y-control-info">
+          <h4>Guía de Lectura</h4>
+          <p>Barra horizontal que sigue el cursor</p>
+        </div>
+      </div>
+      <button
+        id="btn-reading-guide"
+        class="a11y-action-btn"
+        type="button"
+        aria-pressed="false"
+        onclick="toggleReadingGuide()"
+      >
+        Activar Guía Visual
+      </button>
+    </div>
+
+    <!-- CONTROL 6: Reducción de Animaciones -->
+    <div class="a11y-control-card">
+      <div class="a11y-control-head">
+        <div class="a11y-icon-pill">
+          <span style="font-weight: 900; font-size: 0.875rem" aria-hidden="true">⏸</span>
+        </div>
+        <div class="a11y-control-info">
+          <h4>Pausar Animaciones</h4>
+          <p>Para personas con sensibilidad vestibular</p>
+        </div>
+      </div>
+      <button
+        id="btn-reduced-motion"
+        class="a11y-action-btn"
+        type="button"
+        data-motion-toggle
+        aria-pressed="false"
+        onclick="toggleReducedMotion()"
+      >
+        <span data-motion-label>Reducir Movimiento</span>
+      </button>
+    </div>
+
+  </div>
+
+  <div class="a11y-panel-footer">
+    <button
+      type="button"
+      class="a11y-btn-reset-all"
+      onclick="resetAllA11y()"
+    >
+      Restablecer todas las preferencias
+    </button>
+  </div>
+</div>
+
+<!-- Reading Guide Element -->
+<div
+  id="a11y-reading-guide"
+  class="a11y-reading-guide"
+  hidden
+  aria-hidden="true"
+></div>

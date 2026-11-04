@@ -1,0 +1,54 @@
+---
+// pages/proyectos.astro — Independent Projects Page with Exclusive Navigation
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectsNav from "../components/ProjectsNav.astro";
+import Galeria from "../components/Galeria.astro";
+import BottomBar from "../components/BottomBar.astro";
+import Stickers from "../components/Stickers.astro";
+
+// CSS imports
+import "../styles/global.css";
+import "../styles/sidebar.css";
+import "../styles/galeria.css";
+import "../styles/stickers.css";
+---
+
+<BaseLayout title="Proyectos · Diego Vizueta — Portfolio">
+  <!-- Exclusive Independent Header Navigation for Projects -->
+  <ProjectsNav />
+
+  <!-- Stickers Initializer -->
+  <Stickers />
+
+  <!-- 100% Horizontal Snap Scroll Container with Project Slides -->
+  <main
+    id="main-horizontal-container"
+    class="horizontal-scroll-container"
+    tabindex="-1"
+    aria-label="Galería de proyectos"
+  >
+    <Galeria />
+  </main>
+
+  <!-- Floating Minimalist Bottom Bar -->
+  <BottomBar />
+
+  <!-- Scripts -->
+  <script>
+    import { initSidebar } from "../scripts/sidebar.js";
+    import { initHorizontalNav } from "../scripts/horizontal-nav.js";
+    import { initScrollAnimations } from "../scripts/animations.js";
+
+    function start() {
+      initSidebar();
+      initHorizontalNav();
+      initScrollAnimations();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", start);
+    } else {
+      start();
+    }
+  </script>
+</BaseLayout>

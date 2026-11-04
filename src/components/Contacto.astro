@@ -1,0 +1,225 @@
+---
+// Contacto.astro — Contact cards with quick copy, Netlify form and official data
+---
+
+<section
+  id="contacto"
+  class="snap-section contacto-section"
+  data-contrast="light"
+  data-title="CONTACTOS"
+  aria-labelledby="contacto-title"
+  tabindex="-1"
+>
+  <div class="sec-header">
+    <span class="sec-num">09</span>
+    <h2 class="sec-title" id="contacto-title">Contactos</h2>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="contacto-layout">
+    <div class="contacto-left">
+      <p class="contacto-headline">
+        ¿Tienes un proyecto o una oportunidad en mente?
+      </p>
+      <p class="contacto-sub">
+        Escríbeme por cualquiera de estos canales. También puedes copiar los
+        datos con un clic.
+      </p>
+
+      <div class="contacto-cards" aria-label="Canales de contacto">
+        <article class="contacto-card">
+          <span class="contacto-card-icon" aria-hidden="true">WA</span>
+          <div class="contacto-card-body">
+            <span class="contacto-card-label">WhatsApp</span>
+            <a
+              class="contacto-card-value"
+              href="https://wa.me/59365894498498"
+              target="_blank"
+              rel="noopener"
+
+            >
+              +59365894498498
+            </a>
+          </div>
+          <button
+            type="button"
+            class="copy-btn"
+            data-copy="+59365894498498"
+            aria-label="Copiar número de WhatsApp"
+          >
+            Copiar
+          </button>
+        </article>
+
+        <article class="contacto-card">
+          <span class="contacto-card-icon" aria-hidden="true">in</span>
+          <div class="contacto-card-body">
+            <span class="contacto-card-label">LinkedIn</span>
+            <a
+              class="contacto-card-value"
+              href="https://linkedin.com/charly"
+              target="_blank"
+              rel="noopener"
+
+            >
+              linkedin.com/charly
+            </a>
+          </div>
+          <button
+            type="button"
+            class="copy-btn"
+            data-copy="linkedin.com/charly"
+            aria-label="Copiar enlace de LinkedIn"
+          >
+            Copiar
+          </button>
+        </article>
+
+        <article class="contacto-card">
+          <span class="contacto-card-icon" aria-hidden="true">@</span>
+          <div class="contacto-card-body">
+            <span class="contacto-card-label">Correo institucional</span>
+            <a
+              class="contacto-card-value"
+              href="mailto:charly@ug.edu.ec"
+
+            >
+              charly@ug.edu.ec
+            </a>
+          </div>
+          <button
+            type="button"
+            class="copy-btn"
+            data-copy="charly@ug.edu.ec"
+            aria-label="Copiar correo institucional"
+          >
+            Copiar
+          </button>
+        </article>
+
+        <article class="contacto-card">
+          <span class="contacto-card-icon" aria-hidden="true">LOC</span>
+          <div class="contacto-card-body">
+            <span class="contacto-card-label">Dirección</span>
+            <span class="contacto-card-value">Guayaquil, Ecuador</span>
+          </div>
+          <button
+            type="button"
+            class="copy-btn"
+            data-copy="Guayaquil, Ecuador"
+            aria-label="Copiar dirección"
+          >
+            Copiar
+          </button>
+        </article>
+      </div>
+
+      <p class="contacto-copy-status" id="contacto-copy-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="contacto-form-wrap">
+      <p class="side-card-label">// FORMULARIO DE CONTACTO</p>
+      <form
+        class="contacto-form"
+        id="contacto-form"
+        name="contacto"
+        method="POST"
+        action="/?enviado=1#contacto"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="contacto" />
+
+        <p class="hidden-honeypot" aria-hidden="true">
+          <label>No completar: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+        </p>
+
+        <div class="form-row">
+          <label class="form-field">
+            <span>Nombre</span>
+            <input
+              type="text"
+              name="nombre"
+              autocomplete="name"
+              required
+              placeholder="Tu nombre"
+            />
+          </label>
+          <label class="form-field">
+            <span>Correo</span>
+            <input
+              type="email"
+              name="email"
+              autocomplete="email"
+              required
+              placeholder="tu@correo.com"
+            />
+          </label>
+        </div>
+
+        <label class="form-field">
+          <span>Asunto</span>
+          <input
+            type="text"
+            name="asunto"
+            required
+            placeholder="Proyecto, práctica o colaboración"
+          />
+        </label>
+
+        <label class="form-field">
+          <span>Mensaje</span>
+          <textarea
+            name="mensaje"
+            rows="4"
+            required
+            placeholder="Cuéntame qué tienes en mente..."
+          ></textarea>
+        </label>
+
+        <button type="submit" class="form-submit">
+          Enviar mensaje <span aria-hidden="true">→</span>
+        </button>
+
+        <p class="form-note">
+          Formulario compatible con Netlify. Tus datos no se comparten con
+          terceros.
+        </p>
+
+        <p class="form-success" id="form-success" role="status" hidden>
+          ¡Gracias! Tu mensaje fue enviado correctamente. Te responderé pronto.
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <div class="section-stickers-layer" aria-hidden="true">
+    <div
+      class="neo-sticker sticker-black"
+      style="top: 14%; left: 70%; --rot: 4deg; transform: rotate(4deg);"
+      data-sticker
+    >
+      <div class="sticker-inner">
+        <img
+          draggable="false"
+          src="/stickers/4b99986bbd4415b20760544d55961309.png"
+          alt=""
+        />
+      </div>
+    </div>
+
+    <div
+      class="neo-sticker sticker-yellow"
+      style="top: 80%; left: 24%; --rot: -6deg; transform: rotate(-6deg);"
+      data-sticker
+    >
+      <div class="sticker-inner">
+        <img
+          draggable="false"
+          src="/stickers/9472f3475a7a0602353f3aae53b02bef.png"
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,154 @@
+/* ============================
+   EXPERIENCIA SECTION
+   ============================ */
+#experiencia {
+  background-color: var(--section-bg);
+}
+
+.experiencia-layout-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.exp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.exp-item {
+  padding: 18px;
+  border-radius: 16px;
+  border: 1.5px solid var(--gray-light);
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:root[data-theme="dark"] .exp-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: #2c2c30;
+}
+
+.exp-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--orange);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.exp-dates {
+  font-family: var(--font-mono);
+  font-size: 0.6562rem;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.05em;
+}
+
+.exp-role {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--black);
+  line-height: 1.2;
+}
+
+.exp-company {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--gray-mid);
+}
+
+.exp-desc {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--gray-dark);
+  line-height: 1.55;
+  margin-top: 4px;
+}
+
+/* ============================
+   TECH TAGS
+   ============================ */
+.tech-block {
+  padding: 24px;
+  border-radius: 20px;
+  border: 1.5px solid var(--gray-light);
+  background: var(--white);
+}
+
+:root[data-theme="dark"] .tech-block {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: #2c2c30;
+}
+
+.tech-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+
+.tech-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--gray-light);
+  background: transparent;
+  color: var(--black);
+  letter-spacing: 0.03em;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tech-tag:hover {
+  transform: translateY(-2px);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.tech-tag.highlight {
+  border-color: var(--black);
+  background: var(--black);
+  color: var(--white);
+  font-weight: 700;
+}
+
+:root[data-theme="dark"] .tech-tag.highlight {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #0c0c0c;
+}
+
+/* ============================
+   RESPONSIVE — EXPERIENCIA
+   ============================ */
+@media (max-width: 900px) {
+  .experiencia-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .exp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exp-item,
+  .tech-block {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,103 @@
+---
+// ProjectsNav.astro — Exclusive independent navigation menu for Projects
+---
+
+<header class="nav-container projects-nav-container" id="nav-container">
+  <nav
+    id="projects-main-nav"
+    class="floating-capsule-nav"
+    aria-label="Navegación exclusiva de proyectos"
+  >
+    <button
+      class="mobile-nav-toggle"
+      type="button"
+      aria-controls="projects-pills"
+      aria-expanded="false"
+      aria-label="Abrir menú de secciones"
+    >
+      <span class="mobile-nav-toggle-icon" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      <span>Secciones</span>
+    </button>
+
+    <div class="projects-pills-bar" id="projects-pills">
+      <a
+        href="/"
+        class="nav-pill pill-inicio pill-back-home"
+        id="nav-link-back-home"
+        title="Volver a la página principal"
+      >
+        INICIO
+      </a>
+
+      <a
+        href="/#galeria-proyectos"
+        class="nav-pill pill-sobre"
+        id="nav-link-projects-gallery"
+      >
+        GALERÍA
+      </a>
+
+      <a
+        href="https://github.com/MrDiego05"
+        target="_blank"
+        rel="noopener"
+        class="nav-pill pill-proyectos"
+        id="nav-link-proj-github"
+      >
+        GITHUB ↗
+      </a>
+    </div>
+
+    <div class="nav-controls-group">
+      <button
+        id="sidebar-dark-toggle"
+        class="sidebar-btn"
+        type="button"
+        title="Cambiar Modo Oscuro / Claro"
+        aria-label="Alternar modo oscuro y claro"
+      >
+        <svg
+          class="sidebar-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <button
+        id="sidebar-a11y-toggle"
+        class="sidebar-btn sidebar-btn-highlight"
+        type="button"
+        title="Accesibilidad Universal"
+        aria-label="Abrir panel de accesibilidad universal"
+        aria-expanded="false"
+        aria-controls="a11y-advanced-panel"
+      >
+        <svg
+          class="sidebar-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="5" r="2"></circle>
+          <path d="m9 20 3-6 3 6"></path>
+          <path d="m6 8 6 2 6-2"></path>
+          <path d="M12 10v4"></path>
+        </svg>
+        <span class="a11y-badge-pulse" aria-hidden="true"></span>
+      </button>
+    </div>
+  </nav>
+</header>

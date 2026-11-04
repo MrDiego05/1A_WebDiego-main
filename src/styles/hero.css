@@ -1,0 +1,244 @@
+/* ===================================================
+   HERO SECTION — UNIFIED CANVAS & PENCIL SKETCH PORTRAIT
+   Soft Neo-Brutalism Style
+   =================================================== */
+
+.hero-unified-canvas {
+  flex: 0 0 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  background-color: transparent;
+  border: none;
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 8vw 40px 4vw;
+  box-sizing: border-box !important;
+}
+
+:root[data-theme="dark"] .hero-unified-canvas {
+  background-color: transparent;
+}
+
+/* ── Central Dominant Pencil Sketch Layer ── */
+.hero-sketch-layer {
+  position: absolute;
+  top: 50%;
+  left: 56%;
+  transform: translate(-50%, -50%);
+  width: clamp(360px, 54vw, 720px);
+  height: 100%;
+  max-height: 680px;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.sketch-blend-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-sketch-image {
+
+  object-fit: contain;
+  object-position: center;
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: center center;
+  transition: filter 0.3s ease;
+}
+
+:root[data-theme="dark"] .hero-sketch-image {
+  mix-blend-mode: screen;
+  opacity: 0.8;
+}
+
+/* ── Left Content Box: Text & Interaction ── */
+.hero-left {
+  position: relative;
+  z-index: 5;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px 0;
+}
+
+/* Subtítulo: "Hey, Soy" */
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: black;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+/* Nombre: "Diego Vizueta" */
+.hero-name {
+  font-family: var(--font-mono);
+  font-size: clamp(2.625rem, 5.2vw, 3.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--black);
+  margin-bottom: 22px;
+}
+
+/* Párrafo Biográfico */
+.hero-desc {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--gray-dark);
+  margin-bottom: 32px;
+  max-width: 440px;
+}
+
+/* Botón de Acción (CTA): "Disponible" */
+.hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  width: 100%;
+  border: 1px solid transparent;
+  padding: 14px 44px;
+  border-radius: 15px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-cta-btn:hover {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  background: transparent;
+  border: 1px dashed black;
+  color: black;
+}
+
+.hero-cta-btn:active {
+  transform: scale(0.98) translateY(0);
+}
+
+/* ── Top Right Corner Arrow (from reference screenshot) ── */
+.hero-corner-arrow {
+  position: absolute;
+  top: 72px;
+  right: 24px;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--black);
+  background: transparent;
+  color: var(--black);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  font-family: var(--font-mono);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+:root[data-theme="dark"] .hero-corner-arrow {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.hero-corner-arrow:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+  border-style: solid;
+  color: #ffffff;
+  transform: scale(1.1) translateY(2px);
+}
+
+.corner-arrow-inner {
+  display: inline-block;
+  animation: arrowBounce 2s infinite ease-in-out;
+}
+
+@keyframes arrowBounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-unified-canvas {
+    padding: 70px 24px 60px 24px;
+  }
+
+  .hero-sketch-layer {
+    left: 64%;
+    width: 60vw;
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-unified-canvas {
+    height: 100dvh !important;
+    padding: 76px 24px 28px;
+    align-items: flex-end;
+    overflow-y: auto !important;
+  }
+
+  .hero-left {
+    max-width: 100%;
+  }
+
+  .hero-name {
+    font-size: clamp(2.375rem, 12vw, 3.25rem);
+  }
+
+  .hero-desc {
+    font-size: 0.8125rem;
+    margin-bottom: 22px;
+  }
+
+  .hero-sketch-layer {
+    left: 50%;
+    width: 80vw;
+    opacity: 0.35;
+  }
+
+  .hero-corner-arrow {
+    top: 62px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+}

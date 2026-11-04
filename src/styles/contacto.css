@@ -1,0 +1,110 @@
+﻿/* ============================
+   CONTACTO SECTION
+   ============================ */
+#contacto {
+  background: var(--section-bg);
+}
+
+.contacto-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+}
+
+.contacto-headline {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+  max-width: 320px;
+}
+
+.contacto-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.contacto-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.8125rem;
+  color: var(--black);
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-light);
+  transition: color 0.15s;
+}
+
+.contacto-link:hover {
+  color: var(--orange);
+}
+
+.contacto-link-icon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.contacto-link-label {
+  font-size: 0.6875rem;
+  color: var(--gray-mid);
+  margin-left: auto;
+}
+
+/* ============================
+   REFERENCES
+   ============================ */
+.ref-label {
+  font-size: 0.6875rem;
+  color: var(--gray-mid);
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+
+.ref-item {
+  padding: 20px;
+  border: 1px solid var(--gray-light);
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.ref-quote {
+  font-size: 0.75rem;
+  color: var(--gray-dark);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.ref-person {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.ref-role-co {
+  font-size: 0.6875rem;
+  color: var(--gray-mid);
+}
+
+.ref-mark {
+  position: absolute;
+  top: -1px;
+  left: 20px;
+  background: var(--orange);
+  width: 32px;
+  height: 3px;
+}
+
+/* ============================
+   RESPONSIVE — CONTACTO
+   ============================ */
+@media (max-width: 768px) {
+  .contacto-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

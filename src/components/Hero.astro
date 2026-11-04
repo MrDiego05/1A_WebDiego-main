@@ -1,0 +1,110 @@
+---
+// Hero.astro — Unified Canvas Hero with central pencil sketch portrait and left text
+---
+
+<section
+  id="inicio"
+  class="snap-section hero-unified-canvas"
+  aria-label="Inicio"
+  data-contrast="light"
+  data-title="INICIO"
+  tabindex="-1"
+>
+  <!-- Central Dominant Pencil Sketch Layer -->
+  <div class="hero-sketch-layer" id="hero-sketch-layer" aria-hidden="true">
+    <div class="sketch-blend-container">
+      <img
+        class="hero-sketch-image"
+        id="hero-sketch-image"
+        src="/foto.png"
+        alt=""
+        loading="eager"
+        draggable="false"
+      />
+    </div>
+  </div>
+
+  <!-- Left Content Box: Text & Interaction (Sans-serif limpia) -->
+  <div class="hero-left" id="hero-left">
+    <p class="hero-eyebrow">Hey, Soy</p>
+    <h1 class="hero-name">Diego Vizueta</h1>
+    <p class="hero-desc">
+      Futuro Ingeniero en Software apasionado por la resolución de problemas y
+      la innovación. En constante aprendizaje y siempre listo para aportar ideas
+      y sumar en proyectos de equipo desde Guayaquil, Ecuador.
+    </p>
+
+    <a href="#contacto" class="hero-cta-btn" id="hero-btn-disponible">
+      Disponible
+    </a>
+  </div>
+
+  <!-- Top Right Corner Arrow (Screenshot layout element) -->
+  <button
+    class="hero-corner-arrow"
+    onclick="scrollNextHorizontal()"
+    title="Avanzar a la siguiente sección"
+    aria-label="Avanzar a la siguiente sección"
+  >
+    <span class="corner-arrow-inner">↓</span>
+  </button>
+
+  <!-- Stickers anclados a coordenadas de la sección Hero (desaparecen al avanzar en el scroll) -->
+  <div class="section-stickers-layer" aria-hidden="true">
+    <div
+      class="neo-sticker sticker-yellow"
+      style="top: 22%; left: 48%; --rot: -6deg; transform: rotate(-6deg);"
+      data-sticker
+    >
+      <div class="sticker-inner">
+        <img
+          draggable="false"
+          src="/stickers/455cfc37bbc351490d9f315fc13b85c5.png"
+          alt="sticker1"
+        />
+      </div>
+    </div>
+
+    <div
+      class="neo-sticker sticker-black"
+      style="top: 73%; left: 4%; --rot: 4deg; transform: rotate(4deg);"
+      data-sticker
+    >
+      <div class="sticker-inner">
+        <img
+          draggable="false"
+          src="/stickers/4b99986bbd4415b20760544d55961309.png"
+          alt="sticker1"
+        />
+      </div>
+    </div>
+
+    <div
+      class="neo-sticker sticker-orange"
+      style="top: 28%; left: 78%; --rot: 8deg; transform: rotate(8deg);"
+      data-sticker
+    >
+      <div class="sticker-inner">
+        <img
+          draggable="false"
+          src="/stickers/6a70cb59490e386b33ccf66223219f15.png"
+          alt="sticker1"
+        />
+      </div>
+    </div>
+
+    <div
+      class="neo-sticker sticker-white"
+      style="top: 76%; left: 52%; --rot: -3deg; transform: rotate(-3deg);"
+      data-sticker
+    >
+      <div class="sticker-inner">
+        <img
+          draggable="false"
+          src="/stickers/7e4439f8a5dcf49013985c77450b9000.png"
+          alt="sticker1"
+        />
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,108 @@
+﻿/* ============================
+   SOBRE MI SECTION
+   ============================ */
+#sobre-mi {
+  background: var(--black);
+  color: var(--white);
+}
+
+#sobre-mi .sec-rule {
+  background: #333;
+}
+
+#sobre-mi .sec-num {
+  color: #555;
+}
+
+.sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+}
+
+.sobre-col {
+  padding: 0 36px 0 0;
+  border-right: 1px solid #2a2a2a;
+  margin-right: 36px;
+}
+
+.sobre-col:last-child {
+  border-right: none;
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.sobre-col-label {
+  font-size: 0.6875rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.sobre-item {
+  padding: 14px 0;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.sobre-item-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.sobre-item-sub {
+  font-size: 0.6875rem;
+  color: #777;
+  line-height: 1.6;
+}
+
+.sobre-item-year {
+  font-size: 0.625rem;
+  color: var(--orange);
+  margin-top: 4px;
+}
+
+.logro-item {
+  padding: 14px 0;
+  border-bottom: 1px solid #1e1e1e;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.logro-icon {
+  color: var(--orange);
+  font-size: 0.875rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.logro-text {
+  font-size: 0.75rem;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.logro-text strong {
+  color: var(--white);
+  display: block;
+  font-size: 0.8125rem;
+  margin-bottom: 2px;
+}
+
+/* ============================
+   RESPONSIVE — SOBRE MI
+   ============================ */
+@media (max-width: 768px) {
+  .sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .sobre-col {
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
+  }
+}
