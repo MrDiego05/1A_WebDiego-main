@@ -1,3 +1,5 @@
+import onnxWasmUrl from "onnxruntime-web/ort-wasm-simd-threaded.wasm?url";
+
 /**
  * sidebar.js / a11y.js
  * Controls for accessibility, speech synthesis, font scaling and focus mode.
@@ -9,7 +11,11 @@ let speechChunks = [];
 let currentSpeechChunk = 0;
 let speechGeneration = 0;
 let speechRate = 1;
-let speechPitch = 1;
+let speechEngine = null;
+let speechEngineVoice = null;
+let speechEngineLoading = null;
+let speechAudioContext = null;
+let speechAudioSource = null;
 let readingGuideActive = false;
 
 const FONT_SCALES = [100, 115, 130];
@@ -87,6 +93,7 @@ window.toggleA11yPanel = function () {
 
   if (a11yPanelOpen) {
     panel.querySelector(".a11y-panel-close")?.focus();
+    prepareSpeechVoice();
   } else {
     topBtn?.focus();
   }
@@ -292,9 +299,32 @@ window.resetAllA11y = function () {
 };
 
 // ── Speech Synthesis ────────────────────────────────────
+const LOCAL_SPEECH_VOICES = {
+  "es_ES-carlfm-x_low": {
+    file: "es_ES-carlfm-x_low.onnx",
+  },
+  "es_ES-davefx-medium": {
+    file: "es_ES-davefx-medium.onnx",
+  },
+};
+
 function setSpeechStatus(message) {
   const status = document.getElementById("speech-status");
   if (status) status.textContent = message;
+}
+
+function updateSpeechButton(speaking) {
+  const btn = document.getElementById("btn-toggle-speech");
+  btn?.classList.toggle("speaking", speaking);
+  btn?.setAttribute("aria-pressed", String(speaking));
+
+  const icon = document.getElementById("speech-btn-icon");
+  const text = document.getElementById("speech-btn-text");
+  if (icon) icon.textContent = speaking ? "■" : "▶";
+  if (text) text.textContent = speaking ? "Detener lectura" : "Escuchar sección";
+
+  const voiceSelect = document.getElementById("speech-voice");
+  if (voiceSelect) voiceSelect.disabled = speaking;
 }
 
 function resetSpeechButton() {
@@ -302,18 +332,10 @@ function resetSpeechButton() {
   isSpeaking = false;
   speechChunks = [];
   currentSpeechChunk = 0;
-
-  const btn = document.getElementById("btn-toggle-speech");
-  btn?.classList.remove("speaking");
-  btn?.setAttribute("aria-pressed", "false");
-
-  const icon = document.getElementById("speech-btn-icon");
-  const text = document.getElementById("speech-btn-text");
-  if (icon) icon.textContent = "▶";
-  if (text) text.textContent = "Escuchar sección";
+  updateSpeechButton(false);
 }
 
-function splitSpeechText(text, maxLength = 220) {
+function splitSpeechText(text, maxLength = 100) {
   const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
   const chunks = [];
   let chunk = "";
@@ -346,7 +368,144 @@ function splitSpeechText(text, maxLength = 220) {
   return chunks;
 }
 
-function speakNextChunk(generation = speechGeneration) {
+async function loadLocalSpeechEngine(voiceId, generation) {
+  if (speechEngine && speechEngineVoice === voiceId) return speechEngine;
+
+  if (speechEngineLoading) {
+    const pending = speechEngineLoading;
+    const engine = await pending.promise;
+    if (!speechEngine) {
+      speechEngine = engine;
+      speechEngineVoice = pending.voiceId;
+    }
+
+    if (generation !== speechGeneration) return null;
+    if (speechEngineVoice === voiceId) return speechEngine;
+
+    speechEngine.dispose();
+    speechEngine = null;
+    speechEngineVoice = null;
+  } else if (speechEngine) {
+    speechEngine.dispose();
+    speechEngine = null;
+    speechEngineVoice = null;
+  }
+
+  const voice = LOCAL_SPEECH_VOICES[voiceId];
+  if (!voice) throw new Error("Selecciona una voz en español disponible.");
+
+  const pending = {
+    voiceId,
+    promise: Promise.all([
+      import("piper-plus"),
+      import("onnxruntime-web/wasm"),
+    ]).then(async ([{ PiperPlus }, ort]) => {
+      ort.env.wasm.wasmPaths = { wasm: onnxWasmUrl };
+      const modelUrl = new URL(
+        `/models/tts/${voice.file}`,
+        window.location.origin
+      ).href;
+      const engine = await PiperPlus.initialize({
+        model: modelUrl,
+        ort,
+        onProgress: ({ stage, progress }) => {
+          if (generation !== speechGeneration) return;
+          if (stage === "phonemizer") {
+            setSpeechStatus("Preparando lectura en español…");
+          } else if (stage === "model") {
+            setSpeechStatus(
+              `Cargando voz local (${Math.round(progress * 100)}%)…`
+            );
+          }
+        },
+      });
+      // The Spanish-only Piper models have no language-ID input. This map
+      // restricts G2P to Spanish during setup; remove it before inference.
+      delete engine.config.language_id_map;
+      return engine;
+    }),
+  };
+  speechEngineLoading = pending;
+
+  try {
+    const engine = await pending.promise;
+    if (!speechEngine) {
+      speechEngine = engine;
+      speechEngineVoice = voiceId;
+    }
+    if (generation !== speechGeneration) return null;
+    if (speechEngineVoice !== voiceId) {
+      return loadLocalSpeechEngine(voiceId, generation);
+    }
+    return speechEngine;
+  } finally {
+    if (speechEngineLoading === pending) speechEngineLoading = null;
+  }
+}
+
+function prepareSpeechVoice() {
+  const voiceId = document.getElementById("speech-voice")?.value;
+  if (!voiceId || !LOCAL_SPEECH_VOICES[voiceId]) return;
+
+  const generation = speechGeneration;
+  if (speechEngine && speechEngineVoice === voiceId) {
+    setSpeechStatus("Voz local lista.");
+    return;
+  }
+
+  setSpeechStatus("Preparando la voz local para que la lectura empiece antes…");
+  loadLocalSpeechEngine(voiceId, generation)
+    .then((engine) => {
+      if (engine && generation === speechGeneration && !isSpeaking) {
+        setSpeechStatus("Voz local lista. Pulsa Escuchar sección.");
+      }
+    })
+    .catch((error) => {
+      if (generation !== speechGeneration) return;
+      console.error("No se pudo preparar la voz local.", error);
+      setSpeechStatus("No se pudo preparar la voz local. Vuelve a intentarlo.");
+    });
+}
+
+async function playSpeechAudio(audio, generation) {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    throw new Error("Este navegador no es compatible con la reproducción de audio.");
+  }
+
+  if (!speechAudioContext) speechAudioContext = new AudioContextClass();
+  if (speechAudioContext.state === "suspended") {
+    await speechAudioContext.resume();
+  }
+  if (generation !== speechGeneration) return;
+
+  const buffer = speechAudioContext.createBuffer(
+    1,
+    audio.samples.length,
+    audio.sampleRate
+  );
+  buffer.copyToChannel(audio.samples, 0);
+
+  const source = speechAudioContext.createBufferSource();
+  source.buffer = buffer;
+  source.connect(speechAudioContext.destination);
+  speechAudioSource = source;
+
+  await new Promise((resolve, reject) => {
+    source.onended = () => {
+      if (speechAudioSource === source) speechAudioSource = null;
+      resolve();
+    };
+    try {
+      source.start();
+    } catch (error) {
+      if (speechAudioSource === source) speechAudioSource = null;
+      reject(error);
+    }
+  });
+}
+
+async function speakNextChunk(generation = speechGeneration, voiceId) {
   if (generation !== speechGeneration) return;
   if (!isSpeaking || currentSpeechChunk >= speechChunks.length) {
     resetSpeechButton();
@@ -354,54 +513,42 @@ function speakNextChunk(generation = speechGeneration) {
     return;
   }
 
-  const utterance = new SpeechSynthesisUtterance(
-    speechChunks[currentSpeechChunk]
-  );
-  const voices = window.speechSynthesis.getVoices();
-  const spanishVoice = voices.find((voice) =>
-    /^es(?:-|$)/i.test(voice.lang)
-  );
-
-  utterance.lang = spanishVoice?.lang || "es-ES";
-  if (spanishVoice) utterance.voice = spanishVoice;
-  utterance.rate = speechRate;
-  utterance.pitch = speechPitch;
-  utterance.onend = () => {
+  try {
+    const engine = await loadLocalSpeechEngine(voiceId, generation);
+    if (generation !== speechGeneration || !engine) return;
+    setSpeechStatus(
+      `Generando audio: fragmento ${currentSpeechChunk + 1} de ${speechChunks.length}…`
+    );
+    const audio = await engine.synthesize(speechChunks[currentSpeechChunk], {
+      language: "es",
+      lengthScale: 1 / speechRate,
+    });
+    if (generation !== speechGeneration) return;
+    setSpeechStatus(
+      `Reproduciendo fragmento ${currentSpeechChunk + 1} de ${speechChunks.length}.`
+    );
+    await playSpeechAudio(audio, generation);
     if (generation !== speechGeneration) return;
     currentSpeechChunk += 1;
-    speakNextChunk(generation);
-  };
-  utterance.onerror = (event) => {
+    await speakNextChunk(generation, voiceId);
+  } catch (error) {
     if (generation !== speechGeneration) return;
-    if (event.error === "canceled" || event.error === "interrupted") {
-      resetSpeechButton();
-      return;
-    }
-
+    console.error("No se pudo generar la lectura en español.", error);
     resetSpeechButton();
-    const message = event.error === "voice-unavailable" ||
-        window.speechSynthesis.getVoices().length === 0
-      ? "No hay voces instaladas o disponibles en este navegador. Activa una voz en español en la configuración de accesibilidad del sistema y vuelve a intentarlo."
-      : event.error === "not-allowed"
-        ? "El navegador bloqueó la lectura. Vuelve a pulsar Escuchar sección para permitir el audio."
-        : "No se pudo reproducir la voz. Comprueba el audio del dispositivo e inténtalo de nuevo.";
-    setSpeechStatus(message);
-  };
-
-  window.speechSynthesis.speak(utterance);
+    const detail = error instanceof Error ? ` ${error.message}` : "";
+    setSpeechStatus(`No se pudo cargar o reproducir la voz local.${detail}`);
+  }
 }
 
 window.toggleSpeech = function () {
-  if (
-    !("speechSynthesis" in window) ||
-    typeof SpeechSynthesisUtterance === "undefined"
-  ) {
-    setSpeechStatus("Este navegador no es compatible con la lectura por voz.");
-    return;
-  }
-
   if (isSpeaking) {
-    window.speechSynthesis.cancel();
+    try {
+      speechAudioSource?.stop();
+    } catch (error) {
+      if (!(error instanceof DOMException) || error.name !== "InvalidStateError") {
+        console.error("No se pudo detener el audio de lectura.", error);
+      }
+    }
     resetSpeechButton();
     setSpeechStatus("Lectura detenida.");
     return;
@@ -416,52 +563,23 @@ window.toggleSpeech = function () {
     return;
   }
 
+  const voiceId = document.getElementById("speech-voice")?.value;
+  if (!voiceId || !LOCAL_SPEECH_VOICES[voiceId]) {
+    setSpeechStatus("Selecciona una voz en español para iniciar la lectura.");
+    return;
+  }
+
   speechGeneration += 1;
   isSpeaking = true;
-  const btn = document.getElementById("btn-toggle-speech");
-  const icon = document.getElementById("speech-btn-icon");
-  const text = document.getElementById("speech-btn-text");
-  if (btn) {
-    btn.classList.add("speaking");
-    btn.setAttribute("aria-pressed", "true");
-  }
-  if (icon) icon.textContent = "⏹";
-  if (text) text.textContent = "Detener lectura";
-  setSpeechStatus(
-    window.speechSynthesis.getVoices().length
-      ? "Lectura en curso."
-      : "Intentando usar la voz predeterminada del dispositivo."
-  );
-  speakNextChunk(speechGeneration);
+  updateSpeechButton(true);
+  setSpeechStatus("Cargando la voz local. La primera carga puede tardar.");
+  speakNextChunk(speechGeneration, voiceId);
 };
 
 window.updateSpeechRate = function (value) {
   speechRate = Math.min(1.8, Math.max(0.5, parseFloat(value) || 1));
   const rateOutput = document.getElementById("speech-rate-value");
   if (rateOutput) rateOutput.textContent = `${speechRate.toFixed(1)}x`;
-  if (isSpeaking) {
-    const section = getCurrentSection();
-    speechChunks = splitSpeechText(section?.innerText || "");
-    currentSpeechChunk = 0;
-    speechGeneration += 1;
-    window.speechSynthesis.cancel();
-    speakNextChunk(speechGeneration);
-  }
-};
-
-window.updateSpeechSettings = function () {
-  const speedSelect = document.getElementById("a11y-speech-speed");
-  const pitchSelect = document.getElementById("a11y-speech-pitch");
-  if (speedSelect) speechRate = parseFloat(speedSelect.value) || 1;
-  if (pitchSelect) speechPitch = parseFloat(pitchSelect.value) || 1;
-  if (isSpeaking) {
-    const section = getCurrentSection();
-    speechChunks = splitSpeechText(section?.innerText || "");
-    currentSpeechChunk = 0;
-    speechGeneration += 1;
-    window.speechSynthesis.cancel();
-    speakNextChunk(speechGeneration);
-  }
 };
 
 function initReadingGuide() {
@@ -537,6 +655,11 @@ export function initSidebar() {
   document
     .getElementById("btn-toggle-speech")
     ?.addEventListener("click", window.toggleSpeech);
+  document
+    .getElementById("speech-voice")
+    ?.addEventListener("change", () => {
+      if (a11yPanelOpen) prepareSpeechVoice();
+    });
 
   // ── Font scale buttons ──────────────────────────────────
   document.querySelectorAll("button[data-font-scale]").forEach((button) => {

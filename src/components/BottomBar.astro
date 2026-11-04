@@ -70,7 +70,10 @@
         </div>
         <div class="a11y-control-info">
           <h4>Lector de Pantalla (TTS)</h4>
-          <p>Lectura por voz de la sección visible en español</p>
+          <p>
+            Voces en español que se procesan en el dispositivo. No se envía el
+            texto a terceros.
+          </p>
         </div>
       </div>
 
@@ -88,6 +91,17 @@
       <p id="speech-status" class="a11y-speech-status" role="status" aria-live="polite"></p>
 
       <div class="a11y-speech-settings">
+        <label class="a11y-field" for="speech-voice">
+          <span>Voz en español</span>
+          <select id="speech-voice" aria-label="Voz en español">
+            <option value="es_ES-carlfm-x_low">
+              Español de España (ligera, calidad básica, 28 MB)
+            </option>
+            <option value="es_ES-davefx-medium">
+              Español de España (estándar, 63 MB)
+            </option>
+          </select>
+        </label>
         <label class="a11y-field">
           <span>Velocidad de lectura</span>
           <span class="a11y-rate-value"><output id="speech-rate-value">1.0x</output></span>
@@ -103,6 +117,12 @@
           />
         </label>
       </div>
+      <p class="a11y-speech-status">
+        Al abrir este panel se prepara la voz y el motor de audio en este
+        dispositivo. La primera carga requiere unos 43 MB y luego queda en caché;
+        la voz ligera prioriza rapidez sobre naturalidad. La voz estándar
+        necesita una descarga mayor.
+      </p>
     </div>
 
     <!-- CONTROL 2: Tamaño de Fuente Dinámico 100 / 115 / 130 -->

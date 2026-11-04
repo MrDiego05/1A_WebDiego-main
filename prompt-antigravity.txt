@@ -1,0 +1,53 @@
+Actúa como un Arquitecto de Software Frontend y Diseñador UI/UX experto en tecnologías modernas (HTML5 semántico, CSS3 avanzado, JavaScript modular y frameworks frontend). 
+
+Necesito que desarrolles, estructureis y refactorices por completo el proyecto web portafolio con temática de escritorio clásico de Windows XP llamado **"DiegoXP"**, tomando como referencia exacta el diseño, la disposición y la experiencia de usuario del sitio: https://a-diegoweb.netlify.app/
+
+### 1. Pantalla de Carga (Splash Screen - DiegoXP)
+- Diseñar una pantalla de inicio inicial fiel a Windows XP (fondo negro puro, logotipo central con la bandera clásica de Windows XP y la leyenda inferior de copyright)[cite: 2].
+- El texto del cargador debe indicar explícitamente **DiegoXP** con una barra de progreso animada por bloques deslizantes[cite: 2].
+- Al completar la carga (2.5 segundos), la pantalla debe desvanecerse suavemente (`fade-out` con CSS transitions) para revelar el escritorio interactivo.
+
+### 2. Escritorio y Fondo
+- Establecer como fondo de pantalla el icónico paisaje de colinas verdes y cielo azul ("Bliss" de Windows XP), cubriendo exactamente el 100% de la ventana del navegador (`width: 100vw; height: 100vh`) sin desbordamientos[cite: 1, 3].
+- **Sistema de Cuadrícula de Iconos (Grid Snapping):** Los iconos del escritorio (Diego Vizueta, Proyectos, Acerca de mí, Contacto, Habilidades, Experiencia, Logros) deben ordenarse automáticamente en una rejilla magnética invisible. Al arrastrar y soltar un icono (`Drag & Drop`), este debe ajustarse a la celda disponible más cercana sin permitir superposiciones caóticas.
+- Doble clic funcional en los iconos del escritorio para abrir las ventanas correspondientes.
+
+### 3. Sistema de Ventanas Avanzado (Window Manager)
+- **Gestión de Capas Dinámica (Z-Index):** Cada vez que se hace clic en una ventana o se interactúa con ella, su `z-index` debe actualizarse dinámicamente para colocarse **siempre al frente** de cualquier otra ventana abierta.
+- **Barra de Título Clásica:** Todas las ventanas deben poseer una barra superior con el degradado azul clásico de Windows XP[cite: 3], permitiendo arrastrar la ventana fluidamente desde ella.
+- **Botones de Control de Ventana:** Esquina superior derecha con botones funcionales y estilizados para **Minimizar, Maximizar y Cerrar (X)**[cite: 1, 3]. 
+  - Al *Maximizar*, la ventana debe ocupar el 100% del área útil del escritorio (respetando la barra de tareas inferior).
+  - Al *Cerrar*, la ventana se destruye/oculta y desaparece instantáneamente de la barra de tareas.
+- **Animaciones fluidas:** Transiciones suaves de escala y opacidad para los estados de abrir, cerrar, minimizar y maximizar.
+
+### 4. Estructura de Secciones y Contenido Principal
+- **Ventana Principal Integrada:** La sección de **Proyectos** y las demás secciones clave deben integrarse limpiamente dentro del flujo de la ventana principal o como ventanas independientes gestionadas sin anidaciones defectuosas que rompan el scroll.
+- Secciones obligatorias completamente funcionales y responsivas:
+  - **Inicio / Perfil (Diego Vizueta)**[cite: 1]
+  - **Proyectos** (portafolio de trabajos y aplicaciones)[cite: 1]
+  - **Acerca de mí**[cite: 1]
+  - **Habilidades** (skills técnicas y profesionales con diseño limpio)[cite: 1, 4]
+  - **Experiencia**[cite: 1]
+  - **Logros**[cite: 1]
+  - **Contacto** (formulario interactivo funcional y enlaces de interés)[cite: 1, 4]
+
+### 5. Barra de Tareas Inferior (Taskbar)
+- Posición fija en la parte inferior (`bottom: 0`, `position: fixed`, acoplada perfectamente a la pantalla)[cite: 1, 3].
+- Botón de "Inicio" (Start) a la izquierda con menú desplegable clásico[cite: 3].
+- **Dinámica de Tareas Activas:** En la barra de tareas **únicamente deben aparecer los botones de las ventanas que estén abiertas en ese momento**. Si una ventana se cierra, su botón se desvanece de la barra.
+- Reloj del sistema actualizado en tiempo real en la esquina inferior derecha[cite: 3].
+- Controles integrados en la barra de tareas para accesibilidad y efectos de sonido.
+
+### 6. Accesibilidad Integral (A11y Visual y Auditiva)
+- **Accesibilidad Visual:**
+  - Navegación completa por teclado (`Tab`, `Enter`, anillos de enfoque visibles `:focus-visible`).
+  - Enlace rápido de "Saltar al contenido principal" (Skip to main content).
+  - Controles de escalado dinámico de tamaño de fuente en la interfaz (`100%`, `115%`, `130%`).
+  - Modo de Alto Contraste certificado bajo normativas WCAG AAA.
+  - Opción de reducción de animaciones (`prefers-reduced-motion` o botón de toggle).
+  - Síntesis de voz integrada (`Text-to-Speech` mediante la Web Speech API para lectura de textos).
+- **Accesibilidad Auditiva y Efectos de Sonido (SFX):**
+  - Botón de control de audio Arcade (`SFX ON / MUTE`) en la barra de tareas.
+  - Sistema de **Subtítulos Sonoros Visuales** utilizando atributos `aria-live="polite"` que muestren notificaciones emergentes en pantalla cada vez que se ejecute un efecto sonoro (ej. *"🔊 Sonido: Clic de ventana"*), garantizando inclusión total para usuarios con discapacidad auditiva.
+
+Genera todo el código modular, limpio, estético, optimizado y listo para producción que cumpla rigurosamente con cada uno de los puntos anteriores.
