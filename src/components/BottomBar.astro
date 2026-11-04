@@ -79,17 +79,18 @@
           id="btn-toggle-speech"
           class="a11y-action-btn primary"
           type="button"
-          onclick="toggleSpeech()"
           aria-pressed="false"
         >
           <span id="speech-btn-icon" aria-hidden="true">▶</span>
           <span id="speech-btn-text">Escuchar sección</span>
         </button>
       </div>
+      <p id="speech-status" class="a11y-speech-status" role="status" aria-live="polite"></p>
 
       <div class="a11y-speech-settings">
         <label class="a11y-field">
           <span>Velocidad de lectura</span>
+          <span class="a11y-rate-value"><output id="speech-rate-value">1.0x</output></span>
           <input
             type="range"
             id="speech-rate"

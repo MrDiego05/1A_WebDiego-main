@@ -385,6 +385,23 @@
   display: flex;
 }
 
+.a11y-speech-status {
+  min-height: 1em;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--gray-mid);
+}
+
+.a11y-rate-value {
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.a11y-field input[type="range"] {
+  width: 100%;
+  accent-color: var(--orange);
+}
+
 .a11y-action-btn {
   width: 100%;
   font-family: var(--font-mono);

@@ -108,12 +108,14 @@
         <button
           id="btn-toggle-speech"
           class="a11y-action-btn primary"
-          onclick="toggleSpeech()"
+          type="button"
+          aria-pressed="false"
         >
           <span id="speech-btn-icon">▶</span>
           <span id="speech-btn-text">Escuchar página</span>
         </button>
       </div>
+      <p id="speech-status" class="a11y-speech-status" role="status" aria-live="polite"></p>
 
       <div class="a11y-speech-settings">
         <label class="a11y-field">

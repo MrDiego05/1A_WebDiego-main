@@ -5,7 +5,9 @@
 
 let a11yPanelOpen = false;
 let isSpeaking = false;
-let currentUtterance = null;
+let speechChunks = [];
+let currentSpeechChunk = 0;
+let speechGeneration = 0;
 let speechRate = 1;
 let speechPitch = 1;
 let readingGuideActive = false;
@@ -290,74 +292,160 @@ window.resetAllA11y = function () {
 };
 
 // ── Speech Synthesis ────────────────────────────────────
-window.toggleSpeech = function () {
-  if (!("speechSynthesis" in window)) {
-    alert("Tu navegador no soporta el sintetizador de voz (Speech Synthesis).");
+function setSpeechStatus(message) {
+  const status = document.getElementById("speech-status");
+  if (status) status.textContent = message;
+}
+
+function resetSpeechButton() {
+  speechGeneration += 1;
+  isSpeaking = false;
+  speechChunks = [];
+  currentSpeechChunk = 0;
+
+  const btn = document.getElementById("btn-toggle-speech");
+  btn?.classList.remove("speaking");
+  btn?.setAttribute("aria-pressed", "false");
+
+  const icon = document.getElementById("speech-btn-icon");
+  const text = document.getElementById("speech-btn-text");
+  if (icon) icon.textContent = "▶";
+  if (text) text.textContent = "Escuchar sección";
+}
+
+function splitSpeechText(text, maxLength = 220) {
+  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
+  const chunks = [];
+  let chunk = "";
+
+  sentences.forEach((sentence) => {
+    const normalized = sentence.trim();
+    if (!normalized) return;
+
+    normalized.split(/\s+/).forEach((word) => {
+      if (word.length > maxLength) {
+        if (chunk) chunks.push(chunk);
+        chunk = "";
+        for (let start = 0; start < word.length; start += maxLength) {
+          chunks.push(word.slice(start, start + maxLength));
+        }
+        return;
+      }
+
+      const nextChunk = chunk ? `${chunk} ${word}` : word;
+      if (nextChunk.length > maxLength) {
+        chunks.push(chunk);
+        chunk = word;
+      } else {
+        chunk = nextChunk;
+      }
+    });
+  });
+
+  if (chunk) chunks.push(chunk);
+  return chunks;
+}
+
+function speakNextChunk(generation = speechGeneration) {
+  if (generation !== speechGeneration) return;
+  if (!isSpeaking || currentSpeechChunk >= speechChunks.length) {
+    resetSpeechButton();
+    setSpeechStatus("Lectura finalizada.");
     return;
   }
 
-  const btn = document.getElementById("btn-toggle-speech");
-  const icon = document.getElementById("speech-btn-icon");
-  const text = document.getElementById("speech-btn-text");
+  const utterance = new SpeechSynthesisUtterance(
+    speechChunks[currentSpeechChunk]
+  );
+  const voices = window.speechSynthesis.getVoices();
+  const spanishVoice = voices.find((voice) =>
+    /^es(?:-|$)/i.test(voice.lang)
+  );
+
+  utterance.lang = spanishVoice?.lang || "es-ES";
+  if (spanishVoice) utterance.voice = spanishVoice;
+  utterance.rate = speechRate;
+  utterance.pitch = speechPitch;
+  utterance.onend = () => {
+    if (generation !== speechGeneration) return;
+    currentSpeechChunk += 1;
+    speakNextChunk(generation);
+  };
+  utterance.onerror = (event) => {
+    if (generation !== speechGeneration) return;
+    if (event.error === "canceled" || event.error === "interrupted") {
+      resetSpeechButton();
+      return;
+    }
+
+    resetSpeechButton();
+    const message = event.error === "voice-unavailable" ||
+        window.speechSynthesis.getVoices().length === 0
+      ? "No hay voces instaladas o disponibles en este navegador. Activa una voz en español en la configuración de accesibilidad del sistema y vuelve a intentarlo."
+      : event.error === "not-allowed"
+        ? "El navegador bloqueó la lectura. Vuelve a pulsar Escuchar sección para permitir el audio."
+        : "No se pudo reproducir la voz. Comprueba el audio del dispositivo e inténtalo de nuevo.";
+    setSpeechStatus(message);
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+window.toggleSpeech = function () {
+  if (
+    !("speechSynthesis" in window) ||
+    typeof SpeechSynthesisUtterance === "undefined"
+  ) {
+    setSpeechStatus("Este navegador no es compatible con la lectura por voz.");
+    return;
+  }
 
   if (isSpeaking) {
     window.speechSynthesis.cancel();
-    isSpeaking = false;
-    if (btn) {
-      btn.classList.remove("speaking");
-      btn.setAttribute("aria-pressed", "false");
-    }
-    if (icon) icon.textContent = "▶";
-    if (text) text.textContent = "Escuchar sección";
+    resetSpeechButton();
+    setSpeechStatus("Lectura detenida.");
     return;
   }
 
   const section = getCurrentSection();
-  const container = document.getElementById("main-horizontal-container");
-  const readableText = section?.innerText || container?.innerText || "";
-  if (!readableText.trim()) return;
+  const readableText = section?.innerText || "";
+  speechChunks = splitSpeechText(readableText);
+  currentSpeechChunk = 0;
+  if (!speechChunks.length) {
+    setSpeechStatus("No se encontró texto para leer en esta sección.");
+    return;
+  }
 
-  currentUtterance = new SpeechSynthesisUtterance(readableText);
-  currentUtterance.lang = "es-ES";
-  currentUtterance.rate = speechRate;
-  currentUtterance.pitch = speechPitch;
-
-  currentUtterance.onend = () => {
-    isSpeaking = false;
-    if (btn) {
-      btn.classList.remove("speaking");
-      btn.setAttribute("aria-pressed", "false");
-    }
-    if (icon) icon.textContent = "▶";
-    if (text) text.textContent = "Escuchar sección";
-  };
-
-  currentUtterance.onerror = () => {
-    isSpeaking = false;
-    if (btn) {
-      btn.classList.remove("speaking");
-      btn.setAttribute("aria-pressed", "false");
-    }
-    if (icon) icon.textContent = "▶";
-    if (text) text.textContent = "Escuchar sección";
-  };
-
-  window.speechSynthesis.speak(currentUtterance);
+  speechGeneration += 1;
   isSpeaking = true;
+  const btn = document.getElementById("btn-toggle-speech");
+  const icon = document.getElementById("speech-btn-icon");
+  const text = document.getElementById("speech-btn-text");
   if (btn) {
     btn.classList.add("speaking");
     btn.setAttribute("aria-pressed", "true");
   }
   if (icon) icon.textContent = "⏹";
   if (text) text.textContent = "Detener lectura";
+  setSpeechStatus(
+    window.speechSynthesis.getVoices().length
+      ? "Lectura en curso."
+      : "Intentando usar la voz predeterminada del dispositivo."
+  );
+  speakNextChunk(speechGeneration);
 };
 
 window.updateSpeechRate = function (value) {
   speechRate = Math.min(1.8, Math.max(0.5, parseFloat(value) || 1));
+  const rateOutput = document.getElementById("speech-rate-value");
+  if (rateOutput) rateOutput.textContent = `${speechRate.toFixed(1)}x`;
   if (isSpeaking) {
+    const section = getCurrentSection();
+    speechChunks = splitSpeechText(section?.innerText || "");
+    currentSpeechChunk = 0;
+    speechGeneration += 1;
     window.speechSynthesis.cancel();
-    isSpeaking = false;
-    window.toggleSpeech();
+    speakNextChunk(speechGeneration);
   }
 };
 
@@ -367,9 +455,12 @@ window.updateSpeechSettings = function () {
   if (speedSelect) speechRate = parseFloat(speedSelect.value) || 1;
   if (pitchSelect) speechPitch = parseFloat(pitchSelect.value) || 1;
   if (isSpeaking) {
+    const section = getCurrentSection();
+    speechChunks = splitSpeechText(section?.innerText || "");
+    currentSpeechChunk = 0;
+    speechGeneration += 1;
     window.speechSynthesis.cancel();
-    isSpeaking = false;
-    window.toggleSpeech();
+    speakNextChunk(speechGeneration);
   }
 };
 
@@ -443,6 +534,9 @@ export function initSidebar() {
   document
     .getElementById("sidebar-a11y-toggle")
     ?.addEventListener("click", window.toggleA11yPanel);
+  document
+    .getElementById("btn-toggle-speech")
+    ?.addEventListener("click", window.toggleSpeech);
 
   // ── Font scale buttons ──────────────────────────────────
   document.querySelectorAll("button[data-font-scale]").forEach((button) => {
